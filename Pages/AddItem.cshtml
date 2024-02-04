@@ -1,0 +1,85 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.AddItemModel
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+{
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+
+            // JavaScript function to reset the form
+            function resetForm() {
+                document.getElementById('@Model.FormId').reset();
+            }
+
+            // Check if the form needs to be reset and then call the resetForm function
+            if (@Model.formReset) {
+                resetForm();
+            }
+            function setFocusOnItemCode() {
+                document.getElementById('itemCode').focus();
+            }
+    </script>
+}
+
+@section headerContent
+    {
+    <table class="table">
+        <h1>Add Item</h1>
+    </table>
+}
+
+
+<form name="itemForm" id="itemForm" method="post" asp-page-handler="ReloadPage" onsubmit="setFocusOnItemCode()">
+    <table>
+        <tr>
+            <td><label>Item Code:</label></td>
+            <td>
+                <input type="text" id="itemCode" asp-for="itemCode" required maxlength="6">
+                @Html.ValidationMessage("itemCode")
+
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>Description:</label></td>
+            <td>
+                <input type="text" id="description" asp-for="description" required >
+                @Html.ValidationMessage("description")
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>Unit Price:</label></td>
+            <td>
+                <input type="text" id="unitPrice" asp-for="unitPrice" required >                    
+                @Html.ValidationMessage("unitPrice")
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>Stock Balance:</label></td>
+            <td>
+                <input type="text" id="stockBal" asp-for="stockBal" required>
+                @Html.ValidationMessage("stockBal")
+            </td>
+        </tr>
+            
+        <tr>
+            <td><label>Stock Flag:</label></td>
+            <td>
+                <label><input type="radio" id="inStock" asp-for="stockFlag" value="false" > In Stock</label>
+                <label><input type="radio" id="outOfStock" asp-for="stockFlag" value="false"> Out of Stock</label>
+                @Html.ValidationMessage("stockFlag")
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="Submit" value="Submit" ></td>
+            <td><span style="color: red;">@TempData["Message"]</span></td>
+        </tr>
+    </table>
+</form>

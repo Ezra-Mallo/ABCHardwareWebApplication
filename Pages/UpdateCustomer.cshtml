@@ -1,0 +1,115 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.UpdateCustomerModel
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+    {
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        
+                         // JavaScript function to reset the form
+                        function resetForm() {
+                            document.getElementById('@Model.FormId').reset();
+                        }
+
+                        // Check if the form needs to be reset and then call the resetForm function
+                        if (@Model.formReset) {
+                            resetForm();
+                        }
+    </script>
+}
+
+@section headerContent
+    {
+    <table class="table">
+        <h1>Update Item</h1>
+    </table>
+}
+
+<form name="FindCustomerForm" id="FindCustomerForm" method="post">
+    <table>
+        <tr>
+            <td><label>Customer ID:</label></td>
+            <td>
+                <input type="text" id="findCustomerID" asp-for="findCustomerID" required maxlength="9">
+                @Html.ValidationMessage("findCustomerID")
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="Submit" value="Find"></td>
+            <td><span style="color: red;">@Model.Message</span></td>
+        </tr>
+    </table>
+</form>
+
+
+@if (Model.ShowUpdateForm)
+{
+        <form name="updateCustomerForm" id="updateCustomerForm" method="post">
+        <table>
+            <tr>
+                <td><label>Customer ID</label></td>
+                <td><label>@Model.existingCustomer.CustomerID</label></td>
+                <input type="hidden" asp-for="customerID" value="@Model.existingCustomer.CustomerID" />
+            </tr>
+            <tr>
+                <td><label>First Name:</label></td>
+                <td>
+                    <input type="text" id="firstName" asp-for="firstName" required value="@Model.existingCustomer.FirstName">                        
+                    @Html.ValidationMessage("firstName")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Last Name:</label></td>
+                <td>
+                    <input type="text" id="lastName" asp-for="lastName" required value="@Model.existingCustomer.LastName">
+                    @Html.ValidationMessage("lastName")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Address:</label></td>
+                <td>
+                    <input type="text" id="address" asp-for="address" required value="@Model.existingCustomer.Address">
+                    @Html.ValidationMessage("address")
+                </td>
+            </tr>
+            <tr>
+                <td><label for="city">City:</label></td>
+                <td>
+                    <input type="text" id="city" asp-for="city" required value="@Model.existingCustomer.City">
+                    <span asp-validation-for="city"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Province:</label></td>
+                <td>
+                    <input type="text" id="province" asp-for="province" required value="@Model.existingCustomer.Province">
+                    @Html.ValidationMessage("province")
+                </td>
+            </tr>
+            <tr>
+                <td><label for="postalCode">Postal Code:</label> </td>
+                <td>
+                    <input type="text" id="postalCode" asp-for="postalCode" required value="@Model.existingCustomer.PostalCode">
+                    @Html.ValidationMessage("postalCode")
+                </td>
+            </tr>
+
+            <tr>
+                <td><input type="submit" name="Submit" value="Modify" onclick="MyFormReset();"></td>
+            </tr>
+
+        </table>
+
+    </form>
+
+
+}
+

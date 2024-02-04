@@ -1,0 +1,92 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.AddCustomerModel
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+    {
+    <script>
+
+        // JavaScript function to reset the form
+        function resetForm() {
+            document.getElementById('@Model.FormId').reset();
+        }
+
+        // Check if the form needs to be reset and then call the resetForm function
+        if (@Model.formReset) {
+            resetForm();
+        }
+        function setFocusOnFirstName() {
+            document.getElementById('firstName').focus();            
+        }
+    </script>
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+}
+@section headerContent
+    {
+    <table class="table">
+        <h1>Add Customer</h1>
+    </table>
+}
+
+
+<form name="customerForm" id="customerForm" method="post" onsubmit="setFocusOnFirstName();">
+        <table >
+            <tr>
+                <td><label>First Name:</label></td>
+                <td>
+                    <input type="text" id="firstName" asp-for="firstName" required >
+                    @Html.ValidationMessage("firstName")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Last Name:</label></td>
+                <td>
+                    <input type="text" id="lastName" asp-for="lastName" required >
+                    @Html.ValidationMessage("lastName")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Address:</label></td>
+                <td>
+                    <input type="text" id="address" asp-for="address" required >
+                    @Html.ValidationMessage("address")
+
+                </td>
+            </tr>
+            <tr>
+                <td><label for="city">City:</label></td>
+                <td>
+                    <input type="text" id="city" asp-for="city" required>
+                    @Html.ValidationMessage("city")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Province:</label></td>
+                <td>
+                    <input type="text" id="province" asp-for="province" required >
+                    @Html.ValidationMessage("province")
+                </td>
+            </tr>
+            <tr>
+                <td><label for="postalCode">Postal Code:</label> </td>
+                <td>
+                    <input type="text" id="postalCode" asp-for="postalCode" required >
+                    @Html.ValidationMessage("postalCode")
+                </td>
+            </tr>
+
+            <tr>
+                <td><input type="submit" name="Submit" value="Submit"></td>
+                <td><span style="color: red;">@Model.Message</span></td>
+            </tr>
+
+        </table>
+    </form>
+

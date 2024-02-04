@@ -1,0 +1,199 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.SalesModel
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+    {
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+
+
+         function displayFieldInStorage() {
+            var ItemCodeArray = [];
+            var QtyArray = [];
+            var index = 0;
+            var serializedJSON;
+            var displayHTML = '<tr><th>ItemCode In Storage</th><th>Qty In Storage</th></tr>';
+
+
+            if (localStorage.getItem('ItemCodeInStorage') !== null) {
+                serializedJSON = localStorage.getItem('ItemCodeInStorage');
+                ItemCodeArray = JSON.parse(serializedJSON);
+            }
+
+
+            if (localStorage.getItem('QtyInStorage') !== null) {
+                serializedJSON = localStorage.getItem('QtyInStorage');
+                QtyArray = JSON.parse(serializedJSON);
+            }
+
+
+
+
+
+            if (ItemCodeArray.length > 0 && QtyArray.length > 0) {
+                for (index = 0; index <= ItemCodeArray.length - 1; index++) {
+                    displayHTML += '<tr><td>' + ItemCodeArray[index] + '</td><td>' + QtyArray[index] + '</td></tr>';
+                }
+            }
+            else {
+                displayHTML += '<tr><td> Empty </td><td> Empty </td></tr>';
+                }
+
+                window.document.getElementById('DisplayTable').innerHTML = displayHTML;            
+        }
+        
+        function clearItemCodeInStorage(){ 
+            localStorage.removeItem('ItemCodeInStorage');
+            localStorage.removeItem('QtyInStorage');
+            // localStorage.clear();
+            displayFieldInStorage();
+
+        }
+        
+        function storeField(aItemCode, aQty) {
+            var ItemCodeArray = [];
+            var QtyArray = [];
+            var serializedJSON;
+
+            if (localStorage.getItem('ItemCodeInStorage') !== null) {
+                serializedJSON = localStorage.getItem("ItemCodeInStorage");
+                ItemCodeArray = JSON.parse(serializedJSON)     // to deserialize
+            }
+
+            if (localStorage.getItem('QtyInStorage') !== null) {
+                serializedJSON = localStorage.getItem("QtyInStorage");
+                QtyArray = JSON.parse(serializedJSON)     // to deserialize
+            }
+
+            ItemCodeArray.push(aItemCode.value);      
+            serializedJSON = JSON.stringify(ItemCodeArray);   // serialize
+            localStorage.setItem('ItemCodeInStorage', serializedJSON);
+
+            QtyArray.push(aQty.value);
+            serializedJSON = JSON.stringify(QtyArray);   // serialize
+            localStorage.setItem('QtyInStorage', serializedJSON);
+
+            displayFieldInStorage();
+            aItemCode.value = '';
+            aQty.value = '';
+            aItemCode.focus();
+            aItemCode.select();
+
+
+        }
+    </script>
+}
+
+@section headerContent
+    {
+    <table class="table">
+        <h1>Sales </h1>
+    </table>
+}
+
+
+<div>
+    <form name="FindCustomerForm" id="FindCustomerForm" method="post">
+        <h1>Still work in progress</h1>
+        <table>
+            <tr>
+                <td><label>Customer ID:</label></td>
+                <td>
+                    <input type="text" id="findCustomerID" asp-for="findCustomerID" required>
+                    <span asp-validation-for="findCustomerID"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="Submit" value="Find"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@if (Model.ShowUpdateForm)
+{
+    <div>
+        <form name="CustomerForm" id="CustomerForm" method="post">
+            <table id="cust">
+                
+
+                <tr>
+                    <td><label>Customer ID</label></td>
+                    <td colspan ="2"><label>@Model.existingCustomer.CustomerID</label></td>
+                    <input type="hidden" asp-for="customerID" value="@Model.existingCustomer.CustomerID" />
+
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td><label>First Name:</label></td>
+                    <td><label>@Model.existingCustomer.FirstName</label></td>
+                    <input type="hidden" asp-for="firstName" value="@Model.existingCustomer.FirstName">
+
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td><label>Last Name:</label></td>
+                    <td><label>@Model.existingCustomer.LastName</label></td>
+                        <input type="hidden" asp-for="lastName" value="@Model.existingCustomer.LastName">
+                </tr>
+
+                <tr>
+                    <td><label>Address:</label></td>
+                    <td><label>@Model.existingCustomer.Address</label></td>
+                    <input type="hidden" asp-for="address" value="@Model.existingCustomer.Address">
+
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td><label>City:</label></td>
+                    <td><label>@Model.existingCustomer.City</label></td>
+                    <input type="hidden" asp-for="city" value="@Model.existingCustomer.City">
+
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td><label>Province:</label></td>
+                    <td><label>@Model.existingCustomer.Province</label></td>
+                    <input type="hidden" asp-for="province" value="@Model.existingCustomer.Province">
+                
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td><label>Postal Code:</label> </td>
+                    <td><label>@Model.existingCustomer.PostalCode</label> </td>
+                    <input type="hidden" asp-for="postalCode" value="@Model.existingCustomer.PostalCode">                        
+                </tr>
+
+                <tr>
+                    <td><input type="button" value="Add"  onclick="storeField(window.document.CustomerForm.ItemCode, window.document.CustomerForm.Qty );"></td>
+
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>Item Code</td>
+                    <td>
+                        <input type="text" name="ItemCode">
+                    </td>
+                    <td>&emsp;</td>
+                    <td>&emsp;</td>
+                    <td>Quantity</td>
+                    <td>
+                        <input type="text" name="Qty">
+                    </td>
+                    <td>
+                        <input type="button" value="Clear" onclick="clearItemCodeInStorage();" />
+
+                    </td>
+                </tr>
+            </table>
+            <table id="DisplayTable"></table>
+            <script type="text/javascript">
+                displayFieldInStorage();
+            </script>
+        </form>
+    </div>
+
+}

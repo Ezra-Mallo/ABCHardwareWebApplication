@@ -1,0 +1,102 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.Sales2Model
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+    {
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        
+    </script>
+}
+
+@section headerContent
+    {
+    <table class="table">
+        <h1>Sales #2</h1>
+    </table>
+}
+
+<form name="FindCustomerForm" id="FindCustomerForm" method="post">
+    <table>
+        <tr>
+            <td><label>Customer ID:</label></td>
+            <td>
+                <input type="text" id="findCustomerID" asp-for="findCustomerID" required maxlength="9">
+                @Html.ValidationMessage("findCustomerID")
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="Submit" value="Find"></td>
+            <td><span style="color: red;">@Model.Message</span></td>
+
+        </tr>
+    </table>
+</form>
+
+@if (Model.ShowUpdateForm)
+{    
+        <form name="CustomerForm" id="CustomerForm" method="post">
+            <table >
+                <tr>
+                <td>Customer ID: @Model.CustomerID,    &emsp;&emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Name:@Model.FirstName @Model.LastName</td>
+                </tr>
+                <tr>
+                <td>Address: @Model.Address, &emsp; &emsp;&emsp; &emsp; City:@Model.City, &emsp;  &emsp; &emsp; &emsp;  Province:@Model.Province, &emsp; &emsp; &emsp; &emsp; Postal Code:@Model.PostalCode </td>
+                </tr>
+                <tr>
+                    <table>                    
+                    <tr>
+                        <td><input type="submit" name="Submit" value="Add"></td>
+                        <td>Item Code</td>
+                        <td>
+                            <input type="text" asp-for="itemCode" maxlength="6">
+                            <span asp-validation-for="itemCode"></span>
+                        </td>
+                        <td>&emsp;&emsp;</td>
+                        
+                        
+                        <td>Quantity</td>
+                        <td>
+                            <input type="text" asp-for="Qty" maxlength="7">
+                            <span asp-validation-for="Qty"></span>
+                        </td>
+                    </tr>
+                    </table>
+                </tr>
+            </table>
+
+        <table id="itemsTable">
+            <thead>
+                <tr>
+                    <th>Item Code</th>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Stock Balance</th>
+                    <th>Stock Flag</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+                @for (int i = 0; i < Model.ExistingItemCodes.Count; i++)
+                {
+                    <tr>
+
+                        <td>@Model.ExistingItemCodes[i]</td>
+                        <td>@Model.ExistingDescriptions[i]</td>
+                        <td>@Model.ExistingUnitPrices[i]</td>
+                        <td>@Model.ExistingStockBals[i]</td>
+                        <td>@Model.ExistingStockFlags[i]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </form>
+
+}

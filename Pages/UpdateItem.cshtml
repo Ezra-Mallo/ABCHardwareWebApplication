@@ -1,0 +1,112 @@
+﻿@page
+@model ABCHardwareWebApplication.Pages.UpdateItemModel
+@{
+    ViewData["Title"] = "ABCHardware";
+}
+@section scriptContent
+    {
+    <script>
+        
+                                // JavaScript function to reset the form
+                        function resetForm() {
+                            document.getElementById('@Model.FormId').reset();
+                        }
+
+                        // Check if the form needs to be reset and then call the resetForm function
+                        if (@Model.formReset) {
+                            resetForm();
+                        }
+
+    </script>
+    <script src="~/libraries/jquery/jquery.js"></script>
+    <script src="~/libraries/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libraries/jquery-validate-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+}
+
+@section headerContent
+    {
+    <table class="table">
+        <h1>Update Item</h1>
+    </table>
+}
+
+
+    <form name="FinditemForm" id="FinditemForm" method="post">
+        <table>
+            <tr>
+                <td><label>Item Code:</label></td>
+                <td>
+                    <input type="text" id="findItemCode" asp-for="findItemCode" required maxlength="6" >
+                    @Html.ValidationMessage("findItemCode")
+            </td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="Submit" value="Find"></td>
+                <td><span style="color: red;">@Model.Message</span></td>
+            </tr>
+        </table>
+    </form>
+
+
+@if (Model.ShowUpdateForm)
+{
+<form name="updateItemForm" id="updateItemForm" method="post">
+        <table>
+            <tr>
+                <td><label>Item Code:</label></td>
+                <td><label>@Model.existingItem.ItemCode</label></td>
+                <td>
+                    <input type="hidden" asp-for="itemCode" value="@Model.existingItem.ItemCode" />
+                    @Html.ValidationMessage("itemCode")
+                </td>                
+            </tr>
+
+            <tr>
+                <td><label>Description:</label></td>                    
+                <td>
+                    <input type="text" asp-for="description" required value="@Model.existingItem.Description">
+                    @Html.ValidationMessage("description ")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Unit Price:</label></td>
+                <td>
+                    <input type="text" asp-for="unitPrice" required value="@Model.existingItem.UnitPrice">                        
+                    @Html.ValidationMessage("unitPrice")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Stock Balance:</label></td>
+                <td>
+                    <input type="text" asp-for="stockBal" required value="@Model.existingItem.StockBal">                        
+                    @Html.ValidationMessage("stockBal")
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Stock Flag:</label></td>
+                <td>
+                    <label>
+                        <input type="radio" asp-for="stockFlag" value="true" required
+                                checked="@(Model.existingItem.StockFlag == true ? "checked" : "")">
+                        In Stock
+                    </label>
+                    <label>
+                        <input type="radio" asp-for="stockFlag" value="false" required
+                                checked="@(Model.existingItem.StockFlag == false ? "checked" : "")">
+                        Out of Stock
+                    </label>                        
+                    @Html.ValidationMessage("stockFlag")
+                </td>
+            </tr>
+
+            <tr>
+                <td><input type="submit" name="Submit" value="Modify" onclick="MyFormReset();"></td>
+            </tr>
+        </table>
+    </form>
+    
+}
